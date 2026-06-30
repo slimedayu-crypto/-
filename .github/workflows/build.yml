@@ -5,6 +5,10 @@ on:
     branches: [ main, master ]
   workflow_dispatch: {}
 
+defaults:
+  run:
+    working-directory: musicbox_android
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -32,13 +36,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.buildozer
-          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
+          key: buildozer-global-${{ hashFiles('musicbox_android/buildozer.spec') }}
 
       - name: Cache buildozer local
         uses: actions/cache@v4
         with:
-          path: .buildozer
-          key: buildozer-local-${{ hashFiles('buildozer.spec') }}
+          path: musicbox_android/.buildozer
+          key: buildozer-local-${{ hashFiles('musicbox_android/buildozer.spec') }}
 
       - name: Build APK (debug)
         run: |
@@ -48,4 +52,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: musicboxpro-apk
-          path: bin/*.apk
+          path: musicbox_android/bin/*.apk
